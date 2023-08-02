@@ -20,40 +20,64 @@ class _HeadState extends State<Head> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("Enter Password"),
-          content: Form(
-            key: _formKey,
-            child: TextFormField(
-              controller: _passwordController,
-              keyboardType: TextInputType.number,
-              maxLength: 4,
-              obscureText: true,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter the password.";
-                } else if (value.length != 4) {
-                  return "Password must be 4 digits.";
-                } else if (value != correctPassword) {
-                  return "Incorrect password.";
-                }
-                return null;
-              },
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Enter Password",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _passwordController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 4,
+                    obscureText: true,
+                    style: const TextStyle(fontSize: 18),
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the password.";
+                      } else if (value.length != 4) {
+                        return "Password must be 4 digits.";
+                      } else if (value != correctPassword) {
+                        return "Incorrect password.";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      setState(() {
+                        showBalance = true;
+                      });
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text("Submit"),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  setState(() {
-                    showBalance = true;
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text("Submit"),
-            ),
-          ],
         );
       },
     );
