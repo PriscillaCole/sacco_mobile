@@ -6,6 +6,7 @@ class Head extends StatefulWidget {
   const Head({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HeadState createState() => _HeadState();
 }
 

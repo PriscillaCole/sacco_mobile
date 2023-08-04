@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import './head.dart';
 import 'package:sacco/constants.dart';
-import 'package:sacco/size_config.dart';
-import 'package:sacco/helper/greeting.dart';
+
 
 class Body extends StatelessWidget {
   const Body({
