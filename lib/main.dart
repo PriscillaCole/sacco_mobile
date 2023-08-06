@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
 import 'package:sacco/screens/home/home_screen.dart';
+
 import 'package:sacco/screens/splash/splash_screen.dart';
 import 'package:sacco/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,10 +28,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-     home: const CheckAuth(),
-    
+      home: const CheckAuth(),
+
       routes: routes,
-      
     );
   }
 }
@@ -44,30 +44,30 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
+
   @override
   void initState() {
-    _checkIfLoggedIn();
     super.initState();
+    _checkIfLoggedIn();
   }
 
-  void _checkIfLoggedIn() async{
+  void _checkIfLoggedIn() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    if(token != null){
-      setState(() {
-        isAuth = true;
-      });
-    }
+    setState(() {
+      isAuth = token != null;
+    });
   }
+
   @override
-Widget build(BuildContext context) {
-  Widget child;
-  if (isAuth) {
-    child = const HomeScreen();
-  } else {
-    child = const SplashScreen();
+  Widget build(BuildContext context) {
+    Widget child;
+    if (isAuth) {
+      child = const HomeScreen();
+    } else {
+      child = const SplashScreen();
+    }
+    return child;
   }
-  return child;
 }
 
-}

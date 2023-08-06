@@ -186,40 +186,43 @@ class _SignFormState extends State<SignForm> {
       ),
     );
   }
+void _login() async {
+  setState(() {
+    _isLoading = true;
+  });
 
-  void _login() async {
-    setState(() {
-      _isLoading = true;
-    });
+  try {
+    var data = {'password': password, 'username': username};
 
-    try {
-      var data = {'password': password, 'username': username};
+    var res = await Network().authData(data, '/login');
+    var body = json.decode(res.body);
+    print(body);
 
-      var res = await Network().authData(data, '/login');
-      var body = json.decode(res.body);
-      print(body);
+    if (body['code'] == 1) {
+      var userData = body['data']; // Access the 'data' object containing user data.
+      var token = userData['token'];
 
-      if (body['code'] == 1) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('token', json.encode(body['token']));
-        localStorage.setString('user', json.encode(body['user']));
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', token);
+      localStorage.setString('user', json.encode(userData));
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
-      } else {
-        _showMsg(body['message']);
-      }
-    } catch (e) {
-      print("Error: $e");
-      _showMsg('An error occurred. Please try again later.');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+    } else {
+      _showMsg(body['message']);
     }
+  } catch (e) {
+    print("Error: $e");
+    _showMsg('An error occurred. Please try again later.');
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 }

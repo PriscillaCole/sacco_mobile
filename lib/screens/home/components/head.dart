@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
 import 'package:sacco/helper/greeting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Head extends StatefulWidget {
   const Head({Key? key}) : super(key: key);
@@ -11,6 +14,25 @@ class Head extends StatefulWidget {
 }
 
 class _HeadState extends State<Head> {
+  late Future<String?> _nameFuture;
+
+  @override
+  void initState() {
+    _nameFuture = _loadUserData();
+    super.initState();
+  }
+
+  Future<String?> _loadUserData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var user = localStorage.getString('user');
+
+    if (user != null) {
+      return jsonDecode(user)['name'];
+    } else {
+      return 'Member'; // Set a default value here or handle null case appropriately.
+    }
+  }
+
   bool showBalance =
       false; // Initially set to true to show the total balance figure
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -86,57 +108,73 @@ class _HeadState extends State<Head> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 240,
-              decoration: const BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Stack(
+    return FutureBuilder<String?>(
+      future: _nameFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting for the future to complete, show a loading indicator.
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // Handle error if any.
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // Once the future completes successfully, show the UI with the name.
+          final name = snapshot.data ??
+              'Member'; // Use 'Member' as the default name if data is null.
+          return Stack(
+            children: [
+              Column(
                 children: [
-                  Positioned(
-                    top: 25,
-                    left: 320,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(7),
-                      child: const SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: Icon(
-                          Icons.notification_add_outlined,
-                          size: 20,
-                          color: Colors.white,
-                        ),
+                  Container(
+                    width: double.infinity,
+                    height: 240,
+                    decoration: const BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 35, left: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Stack(
                       children: [
-                        Text(
-                          getGreeting(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        Positioned(
+                          top: 25,
+                          left: 320,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(7),
+                            child: const SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: Icon(
+                                Icons.notification_add_outlined,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                        const Text(
-                          "Priscilla Cole",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 35, left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                getGreeting(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                'Hi, $name',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -144,181 +182,181 @@ class _HeadState extends State<Head> {
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        Positioned(
-          top: 150,
-          left: 20,
-          child: Container(
-            height: 170,
-            width: 320,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-              color: kPrimaryLightColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Total Balance",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          showBalance
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          if (!showBalance) {
-                            // If the balance is hidden, show the password dialog
-                            _showPasswordDialog();
-                          } else {
-                            // If the balance is shown, simply toggle the state
-                            setState(() {
-                              showBalance = !showBalance;
-                            });
-                          }
-                        },
+              Positioned(
+                top: 150,
+                left: 20,
+                child: Container(
+                  height: 170,
+                  width: 320,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
                       ),
                     ],
+                    color: kPrimaryLightColor,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-                const SizedBox(height: 5),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Hide the total balance figure if showBalance is false
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Total Balance",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                showBalance
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                if (!showBalance) {
+                                  // If the balance is hidden, show the password dialog
+                                  _showPasswordDialog();
+                                } else {
+                                  // If the balance is shown, simply toggle the state
+                                  setState(() {
+                                    showBalance = !showBalance;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Hide the total balance figure if showBalance is false
 
-                        if (!showBalance)
-                          const Text(
-                            "UGX ******",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                              if (!showBalance)
+                                const Text(
+                                  "UGX ******",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              if (showBalance)
+                                const Text(
+                                  "UGX 1,000.00",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
                           ),
-                        if (showBalance)
-                          const Text(
-                            "UGX 1,000.00",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.arrow_upward,
-                              size: 16,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                          SizedBox(width: 7),
-                          Text(
-                            "Income",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      Row(
-                        children: const [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              Icons.arrow_downward,
-                              size: 16,
-                              color: kPrimaryColor,
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: const [
+                                CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(
+                                    Icons.arrow_upward,
+                                    size: 16,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                                SizedBox(width: 7),
+                                Text(
+                                  "Income",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(width: 7),
-                          Text(
-                            "Expenses",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
+                            Row(
+                              children: const [
+                                CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor: Colors.white,
+                                  child: Icon(
+                                    Icons.arrow_downward,
+                                    size: 16,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                                SizedBox(width: 7),
+                                Text(
+                                  "Expenses",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      const SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "2,00 /=",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              "1,40 /=",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "2,00 /=",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "1,40 /=",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 5),
-              ],
-            ),
-          ),
-        )
-      ],
+              )
+            ],
+          );
+        }
+      },
     );
   }
 }

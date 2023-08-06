@@ -7,9 +7,11 @@ import 'package:sacco/screens/home/home_screen.dart';
 import 'package:sacco/screens/login_success/login_success_screen.dart';
 import 'package:sacco/screens/otp/otp_screen.dart';
 import 'package:sacco/screens/profile/profile_screen.dart';
+import 'package:sacco/screens/sacco_member/sacco_member.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 import 'package:sacco/screens/splash/splash_screen.dart';
 import 'package:sacco/screens/sacco_registration/sacco_registration_screen.dart';
+
 
 import 'screens/register/register_screen.dart';
 
@@ -24,4 +26,5 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => const HomeScreen(),
   ProfileScreen.routeName: (context) => const ProfileScreen(),
   SaccoRegistration.routeName: (context) => const SaccoRegistration(),
+  SaccoMember.routeName: (context) => const SaccoMember(),
 };

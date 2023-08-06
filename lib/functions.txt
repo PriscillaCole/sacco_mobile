@@ -1,0 +1,13 @@
+clear whats in the local localStoragevoid clearAllData() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  localStorage.clear();
+}
+
+View whats in the shared localStorage
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Function to delete information with a given key from SharedPreferences.
+void deleteData(String key) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  localStorage.remove(key);
+}

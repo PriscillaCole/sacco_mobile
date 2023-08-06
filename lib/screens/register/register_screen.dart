@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'components/body.dart';
+import 'package:sacco/screens/register/components/register_form.dart';
 
 class RegisterScreen extends StatelessWidget {
   static String routeName = "/sign_up";
@@ -8,11 +7,6 @@ class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sign Up"),
-      ),
-      body: const Body(),
-    );
+    return const RegisterForm();
   }
 }
