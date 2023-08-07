@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
@@ -73,6 +75,64 @@ class _BodyState extends State<Body> {
                                 style:
                                     const TextStyle(color: Color(0xFF000000)),
                                 cursorColor: const Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.work,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Sacco",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    saccoId = value;
+                                  });
+                                },
+                                validator: (saccoValue) {
+                                  if (saccoValue?.isEmpty ?? true) {
+                                    return 'Please enter sacco';
+                                  }
+                                  saccoId = saccoValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style:
+                                    const TextStyle(color: Color(0xFF000000)),
+                                cursorColor: const Color(0xFF9b9b9b),
+                                keyboardType: TextInputType.text,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.emoji_people,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: "Full Name",
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9b9b9b),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    fullName = value;
+                                  });
+                                },
+                                validator: (nameValue) {
+                                  if (nameValue?.isEmpty ?? true) {
+                                    return 'Please enter email';
+                                  }
+                                  fullName = nameValue;
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                style:
+                                    const TextStyle(color: Color(0xFF000000)),
+                                cursorColor: const Color(0xFF9b9b9b),
                                 keyboardType: TextInputType.text,
                                 decoration: const InputDecoration(
                                   prefixIcon: Icon(
@@ -102,7 +162,7 @@ class _BodyState extends State<Body> {
                                 style:
                                     const TextStyle(color: Color(0xFF000000)),
                                 cursorColor: const Color(0xFF9b9b9b),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: const InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.insert_emoticon,
@@ -741,10 +801,10 @@ class _BodyState extends State<Body> {
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      _registerMember();
-                                    }
+                                  onPressed: () async {
+                                    // if (_formKey.currentState!.validate()) {
+                                    await _registerMember();
+                                    // }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kPrimaryColor,
@@ -803,7 +863,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  void _registerMember() async {
+  Future<void> _registerMember() async {
     setState(() {
       _isLoading = true;
     });
@@ -836,16 +896,14 @@ class _BodyState extends State<Body> {
       'status': status,
     };
 
-    var res = await Network().authData(data, '/sacco_members');
-    var body = json.decode(res.body);
+    final res = await Network().authData(data, '/sacco_members');
 
+    final body = json.decode(res.body);
     if (body['code'] == 1) {
-      var userData =
-          body['data']; // Access the 'data' object containing user data.
-      var token = body['data']['token'];
+
+      var userData = body['data'];
 
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', token);
       localStorage.setString('sacco_member', json.encode(userData));
 
       Navigator.push(
