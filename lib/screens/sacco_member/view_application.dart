@@ -7,7 +7,7 @@ class UsersListScreen extends StatefulWidget {
 }
 
 class _UsersListScreenState extends State<UsersListScreen> {
-  final ApiService apiService = ApiService();
+  final ApiService apiService = ApiService('sacco_members');
   List<Map<String, dynamic>> users = [];
 
   @override

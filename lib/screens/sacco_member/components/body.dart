@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final _apiService = ApiService('register');
+  final _apiService = ApiService('/sacco_members');
 
   final Map<String, String> fieldValues = {};
 
@@ -113,57 +113,8 @@ class _BodyState extends State<Body> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  // if (_formKey.currentState!.validate()) {
-                                  await _registerMember();
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kPrimaryColor,
-                                  padding: const EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 10, right: 10),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0)),
-                                ),
-                                child: Text(
-                                  _isLoading ? 'Processing...' : 'Register',
-                                  textDirection: TextDirection.ltr,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.0,
-                                    decoration: TextDecoration.none,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignInScreen(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'Already a Member?',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.0,
-                                    decoration: TextDecoration.none,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                            ),
+
+                         
                           ],
                         ),
                       ),
@@ -183,33 +134,61 @@ class _BodyState extends State<Body> {
       _isLoading = true;
     });
 
+    // final data = {
+    //   'sacco_id': _saccoId,
+    //   'user_id': _userId,
+    //   'full_name': _fullName,
+    //   'date_of_birth': _dateOfBirth,
+    //   'gender': _gender,
+    //   'image': _image,
+    //   'nationality': _nationality,
+    //   'identification_number': _identificationNumber,
+    //   'physical_address': _physicalAddress,
+    //   'postal_address': _postalAddress,
+    //   'email': _email,
+    //   'phone_number': _phoneNumber,
+    //   'employment_status': _employmentStatus,
+    //   'employer_name': _employerName,
+    //   'monthly_income': _monthlyIncome,
+    //   'bank_account_number': _bankAccountNumber,
+    //   'bank_name': _bankName,
+    //   'membership_type': _membershipType,
+    //   'membership_id': _membershipId,
+    //   'date_of_joining': _dateOfJoining,
+    //   'next_of_kin_name': _nextOfKinName,
+    //   'next_of_kin_contact': _nextOfKinContact,
+    //   'beneficiary_name': _beneficiaryName,
+    //   'beneficiary_relationship': _beneficiaryRelationship,
+    //   'status': _status,
+    // };
     final data = {
-      'sacco_id': _saccoId,
-      'user_id': _userId,
-      'full_name': _fullName,
-      'date_of_birth': _dateOfBirth,
-      'gender': _gender,
-      'image': _image,
-      'nationality': _nationality,
-      'identification_number': _identificationNumber,
-      'physical_address': _physicalAddress,
-      'postal_address': _postalAddress,
-      'email': _email,
-      'phone_number': _phoneNumber,
-      'employment_status': _employmentStatus,
-      'employer_name': _employerName,
-      'monthly_income': _monthlyIncome,
-      'bank_account_number': _bankAccountNumber,
-      'bank_name': _bankName,
-      'membership_type': _membershipType,
-      'membership_id': _membershipId,
-      'date_of_joining': _dateOfJoining,
-      'next_of_kin_name': _nextOfKinName,
-      'next_of_kin_contact': _nextOfKinContact,
-      'beneficiary_name': _beneficiaryName,
-      'beneficiary_relationship': _beneficiaryRelationship,
-      'status': _status,
-    };
+  'sacco_id': 15,
+  'user_id': 2,
+  'full_name': 'John Doe',
+  'date_of_birth': '1990-05-15',
+  'gender': 'Male',
+  'image': 'https://example.com/profile.jpg',
+  'nationality': 'Kenyan',
+  'identification_number': 'ABC123456',
+  'physical_address': '123 Main St, Nairobi',
+  'postal_address': 'P.O. Box 5678, Nairobi',
+  'email': 'john.doe@example.com',
+  'phone_number': 1234567890,
+  'employment_status': 'Employed',
+  'employer_name': 'XYZ Corporation',
+  'monthly_income': 5000,
+  'bank_account_number': 0123456789,
+  'bank_name': 'ABC Bank',
+  'membership_type': 'Regular',
+  'membership_id': 'MID123',
+  'date_of_joining': '2022-01-15',
+  'next_of_kin_name': 'Jane Doe',
+  'next_of_kin_contact': 1234567891,
+  'beneficiary_name': 'Sarah Doe',
+  'beneficiary_relationship': 'Daughter',
+  'status': 'Active',
+};
+
 
     try {
       await _apiService.createUser(data);
@@ -246,7 +225,10 @@ class _BodyState extends State<Body> {
 
       // Create an instance of DatabaseHelper
       final DatabaseHelper databaseHelper = DatabaseHelper();
+       print('Before inserting into database');
+      await databaseHelper.initialize();
       await databaseHelper.insertSaccoMember(saccoMember);
+      print('After inserting into database');
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User registered successfully')),
@@ -255,9 +237,13 @@ class _BodyState extends State<Body> {
         _isLoading = false;
       });
     } catch (error) {
+       print('Error inserting into database: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to register user')),
       );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

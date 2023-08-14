@@ -5,7 +5,7 @@ import 'package:sacco/models/sacco_member.dart';
 class DatabaseHelper {
   static late Database _database;
 
-  static Future<void> initialize() async {
+   Future<void> initialize() async {
     _database = await openDatabase(
       join(await getDatabasesPath(), 'sacco_member_database.db'),
       version: 1,

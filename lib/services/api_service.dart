@@ -1,29 +1,40 @@
 import 'package:dio/dio.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://sacco.ugnews24.info/api/';
+  static const String baseUrl = 'https://sacco.ugnews24.info/api';
   final Dio dio = Dio();
   final String apiUrl;
 
   ApiService(this.apiUrl);
 
   Future<void> createUser(Map<String, dynamic> userData) async {
+    print(baseUrl + apiUrl);
     try {
       final response = await dio.post(
         baseUrl + apiUrl,
         data: userData,
       );
-
-      if (response.statusCode == 201) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         print('User created successfully');
       } else {
         print('User creation failed with status code: ${response.statusCode}');
         print('Response data: ${response.data}');
       }
     } catch (error) {
+    // Handle DioException
+    // ignore: deprecated_member_use
+    if (error is DioError) {
+      print('DioError: ${error.message}');
+      if (error.response != null) {
+        print('Response data: ${error.response?.data}');
+      }
+    } else {
+      // Handle other exceptions
       print('Error creating user: $error');
     }
   }
+}
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     try {
@@ -75,17 +86,3 @@ class ApiService {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
