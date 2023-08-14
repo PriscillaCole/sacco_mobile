@@ -9,7 +9,7 @@ class CustomDropdownButton extends StatefulWidget {
   final Color hintTextColor;
   final Color dropdownColor;
 
-  CustomDropdownButton({
+  const CustomDropdownButton({super.key, 
     required this.items,
     required this.selectedItem,
     required this.onChanged,

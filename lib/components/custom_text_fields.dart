@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+
+class CustomTextFormField extends StatefulWidget {
+  final IconData prefixIcon;
+  final String hintText;
+  final TextInputType keyboardType;
+  final void Function(String)? onSaved;
+  final String? Function(String?)? validator;
+
+  CustomTextFormField({
+    required this.prefixIcon,
+    required this.hintText,
+    required this.keyboardType,
+    required this.onSaved,
+    required this.validator,
+  });
+
+  @override
+  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late String fieldValue;
+
+  @override
+  void initState() {
+    super.initState();
+    fieldValue = '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: const TextStyle(color: Color(0xFF000000)),
+      cursorColor: const Color(0xFF9b9b9b),
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          widget.prefixIcon,
+          color: Colors.grey,
+        ),
+        hintText: widget.hintText,
+        hintStyle: TextStyle(
+          color: Color(0xFF9b9b9b),
+          fontSize: 15,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+      onChanged: (value) {
+        setState(() {
+          fieldValue = value;
+        });
+        if (widget.onSaved != null) {
+          widget.onSaved!(value);
+        }
+      },
+      validator: (fieldValue) {
+        if (widget.validator != null) {
+          return widget.validator!(fieldValue);
+        }
+        return null;
+      },
+    );
+  }
+}

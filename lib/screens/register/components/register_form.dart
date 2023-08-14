@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
 import 'package:sacco/network_utils/api.dart';
 import 'package:sacco/screens/home/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
+import 'package:sacco/services/api_service.dart';
+import 'package:sacco/models/user.dart';
+import 'package:sacco/database/user_registration.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -16,10 +18,12 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  var email;
-  var password;
-  var username;
-  var name;
+  final _apiService = ApiService('register');
+
+  String _username = '';
+  String _email = '';
+  String _password = '';
+  String _name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +67,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    email = value;
-                                  });
-                                },
-                                validator: (emailValue) {
-                                  if (emailValue?.isEmpty ?? true) {
-                                    return 'Please enter email';
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
                                   }
-                                  email = emailValue;
                                   return null;
+                                },
+                                onSaved: (value) {
+                                  _email = value!;
                                 },
                               ),
                               TextFormField(
@@ -92,17 +93,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    name = value;
-                                  });
-                                },
-                                validator: (nameValue) {
-                                  if (nameValue?.isEmpty ?? true) {
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
                                     return 'Please enter your name';
                                   }
-                                  name = name;
                                   return null;
+                                },
+                                onSaved: (value) {
+                                  _name = value!;
                                 },
                               ),
                               TextFormField(
@@ -121,17 +119,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    username = value;
-                                  });
-                                },
-                                validator: (usernameValue) {
-                                  if (usernameValue?.isEmpty ?? true) {
-                                    return 'Please enter username';
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your username';
                                   }
-                                  username = username;
                                   return null;
+                                },
+                                onSaved: (value) {
+                                  _username = value!;
                                 },
                               ),
                               TextFormField(
@@ -151,18 +146,14 @@ class _RegisterFormState extends State<RegisterForm> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.normal),
                                 ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    password = value;
-                                  });
-                                },
-                                validator: (passwordValue) {
-                                  if (passwordValue?.isEmpty ?? true) {
-                                    // Use null-aware and null check to handle null and empty cases
-                                    return 'Please enter password';
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your password';
                                   }
-                                  password = passwordValue;
                                   return null;
+                                },
+                                onSaved: (value) {
+                                  _password = value!;
                                 },
                               ),
                               Padding(
@@ -170,7 +161,8 @@ class _RegisterFormState extends State<RegisterForm> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
-                                      _register();
+                                      _formKey.currentState!.save();
+                                      _registerUser();
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -228,41 +220,44 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-void _register() async {
-  setState(() {
-    _isLoading = true;
-  });
+  Future<void> _registerUser() async {
+    // final userData = {
+    //   'username': _username,
+    //   'email': _email,
+    //   'password': _password,
+    // };
+    final userData = {
+      'username': 'rizzfffykkk',
+      'email': 'rizkvvvkl@gmail.com',
+      'name': 'RIzzyekkhhrr',
+      'password': '123456789',
+    };
 
-  var data = {
-    'email': email,
-    'password': password,
-    'username': username,
-    'name': name,
-  };
+    try {
+      await _apiService.createUser(userData);
+      
+      // Store user in SQLite
+      final user = User(
+        id: DateTime.now().millisecondsSinceEpoch,
+        username: _username,
+        name: _name,
+        email: _email,
+      );
 
-  var res = await Network().authData(data, '/register');
-  var body = json.decode(res.body);
+      // Create an instance of DatabaseHelper
+      final DatabaseHelper databaseHelper = DatabaseHelper();
+      await databaseHelper.insertUser(user);
 
-  if (body['code'] == 1) {
-    var userData = body['data']; // Access the 'data' object containing user data.
-    var name = userData['name'];
-    var email = userData['email'];
-    var username = userData['username'];
-    var token = body['data']['token'];
-
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.setString('token', token);
-    localStorage.setString('user', json.encode(userData));
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User registered successfully')),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to register user')),
+      );
+    }
   }
-
-  setState(() {
-    _isLoading = false;
-  });
-}
-
 }
