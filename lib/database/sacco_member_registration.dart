@@ -5,7 +5,7 @@ import 'package:sacco/models/sacco_member.dart';
 class DatabaseHelper {
   static late Database _database;
 
-   Future<void> initialize() async {
+  Future<void> initialize() async {
     _database = await openDatabase(
       join(await getDatabasesPath(), 'sacco_member_database.db'),
       version: 1,
@@ -50,7 +50,8 @@ class DatabaseHelper {
   }
 
   Future<List<SaccoMember>> getSaccoMembers() async {
-    final List<Map<String, dynamic>> maps = await _database.query('sacco_members');
+    final List<Map<String, dynamic>> maps =
+        await _database.query('sacco_members');
 
     return List.generate(maps.length, (i) {
       return SaccoMember.fromJson(maps[i]);
@@ -72,5 +73,18 @@ class DatabaseHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<bool> checkUserExists(String userId) async {
+    print('Checking if user exists');
+    final db = await _database; // Ensure _database is initialized
+
+    final count = Sqflite.firstIntValue(await db.rawQuery(
+      'SELECT COUNT(*) FROM sacco_members WHERE user_id = ?',
+      [userId],
+    ));
+    print('Count: $count');
+
+    return count! > 0;
   }
 }

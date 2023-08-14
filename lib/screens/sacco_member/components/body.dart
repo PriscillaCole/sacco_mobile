@@ -225,10 +225,10 @@ class _BodyState extends State<Body> {
 
       // Create an instance of DatabaseHelper
       final DatabaseHelper databaseHelper = DatabaseHelper();
-       print('Before inserting into database');
+
+      //initialize the database
       await databaseHelper.initialize();
       await databaseHelper.insertSaccoMember(saccoMember);
-      print('After inserting into database');
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User registered successfully')),
@@ -237,7 +237,7 @@ class _BodyState extends State<Body> {
         _isLoading = false;
       });
     } catch (error) {
-       print('Error inserting into database: $error');
+       //print('Error inserting into database: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to register user')),
       );

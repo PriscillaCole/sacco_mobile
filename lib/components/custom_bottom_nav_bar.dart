@@ -6,8 +6,10 @@ import 'package:sacco/screens/sacco_member/sacco_member.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:sacco/screens/sacco_member/sacco_member.dart';
 import 'package:sacco/network_utils/api.dart';
-
+import 'package:sacco/models/sacco_member.dart';
+import 'package:sacco/database/sacco_member_registration.dart';
 
 import '../constants.dart';
 import '../enums.dart';
@@ -40,18 +42,46 @@ class CustomBottomNavBar extends StatelessWidget {
               onPressed: () =>
                   Navigator.pushNamed(context, HomeScreen.routeName),
             ),
-
             IconButton(
-              icon: SvgPicture.asset("assets/icons/Heart Icon.svg",
-              color: MenuState.member == selectedMenu
-                    ? kPrimaryColor
-                    : inActiveIconColor,
-              ),
-              onPressed: () =>
-                  Navigator.pushNamed(context, SaccoMember.routeName),
-          
-            ),
-            
+                icon: SvgPicture.asset(
+                  "assets/icons/Heart Icon.svg",
+                  color: MenuState.member == selectedMenu
+                      ? kPrimaryColor
+                      : inActiveIconColor,
+                ),
+                onPressed: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  var user = localStorage.getString('user');
+
+                  print(user);
+                  final DatabaseHelper databaseHelper = DatabaseHelper();
+
+                  // Ensure the database is initialized
+                  await databaseHelper.initialize();
+
+                  // Check if the user exists in the database
+
+                  if (user != null) {
+                    var userId = jsonDecode(user)['id'];
+                    String userIdString = userId.toString();
+                    bool userExists =
+                        await databaseHelper.checkUserExists('9');
+                    // Rest of your code
+                    print('hi');
+                    if (userExists) {
+                      // User exists, navigate to a different page
+                      //return
+                      print('User exists');
+                      Text('User exists');
+                    } else {
+                      // User doesn't exist, send them to the registration page
+                      //return text
+                      print('User does not exist');
+                      Text('User does not exist');
+                    }
+                  }
+                }),
             IconButton(
               icon: SvgPicture.asset(
                 "assets/icons/User Icon.svg",
@@ -62,15 +92,15 @@ class CustomBottomNavBar extends StatelessWidget {
               onPressed: () =>
                   Navigator.pushNamed(context, ProfileScreen.routeName),
             ),
-
-
             IconButton(
-              icon: SvgPicture.asset("assets/icons/Log out.svg",
+              icon: SvgPicture.asset(
+                "assets/icons/Log out.svg",
                 color: MenuState.logout == selectedMenu
                     ? kPrimaryColor
-                    : inActiveIconColor,),
+                    : inActiveIconColor,
+              ),
               onPressed: () {
-                 logout(context);
+                logout(context);
               },
             ),
           ],
@@ -79,20 +109,19 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-void logout(BuildContext context) async {
-  var res = await Network().getData('/logout');
-  var body = json.decode(res.body);
+  void logout(BuildContext context) async {
+    var res = await Network().getData('/logout');
+    var body = json.decode(res.body);
 
-  print (body);
-  if (body['code'] == 1) {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.remove('user');
-    localStorage.remove('token');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SignInScreen()),
-    );
+    print(body);
+    if (body['code'] == 1) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.remove('user');
+      localStorage.remove('token');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
+      );
+    }
   }
-}
-
 }
