@@ -15,7 +15,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.keyboardType,
     required this.onSaved,
     required this.validator, 
-     this.initialValue, 
+     this.initialValue = '', 
   });
 
   @override
@@ -36,6 +36,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return TextFormField(
       style: const TextStyle(color: Color(0xFF000000)),
       cursorColor: const Color(0xFF9b9b9b),
+      initialValue: widget.initialValue,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         prefixIcon: Icon(

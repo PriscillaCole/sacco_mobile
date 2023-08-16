@@ -95,19 +95,19 @@ class _BodyState extends State<Body> {
                               // Loop through form fields and create CustomTextFormField widgets
                               for (var field in FormFieldData.fieldList)
                                 CustomTextFormField(
+                                  initialValue:
+                                      _getFieldValue(field.identifier),
                                   prefixIcon: field.prefixIcon,
                                   hintText: field.hintText,
                                   keyboardType: field.keyboardType,
                                   validator: field.validator,
-                                  initialValue: field.initialValue,
                                   onSaved: (value) {
-                                    
                                     setState(() {
                                       fieldValues[field.identifier] = value;
                                     });
                                   },
                                 ),
-                               
+
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: ElevatedButton(
@@ -151,20 +151,18 @@ class _BodyState extends State<Body> {
     );
   }
 
-  String getFieldPropertyName(String identifier) {
+  String _getFieldValue(String identifier) {
     switch (identifier) {
+      // Implement the logic to return the corresponding field value
       case '_saccoId':
-        return 'sacco_id';
+         return fieldValues['sacco_id'].toString();
       case '_userId':
-        return 'user_id';
+         return fieldValues['user_id'].toString();
       case '_fullName':
-        return 'full_name';
+         return fieldValues['full_name'].toString();
       case '_dateOfBirth':
-        return 'date_of_birth';
-      case '_gender':
-        return 'gender';
-      case '_image':
-        return 'image';
+         return fieldValues['date_of_birth'].toString();
+      // Add cases for other fields
       default:
         return '';
     }
