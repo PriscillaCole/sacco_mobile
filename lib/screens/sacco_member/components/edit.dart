@@ -95,6 +95,7 @@ class _BodyState extends State<Body> {
                               // Loop through form fields and create CustomTextFormField widgets
                               for (var field in FormFieldData.fieldList)
                                 CustomTextFormField(
+                                  title: field.title,
                                   initialValue:
                                       _getFieldValue(field.identifier),
                                   prefixIcon: field.prefixIcon,

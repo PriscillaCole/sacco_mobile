@@ -7,6 +7,7 @@ class FormFieldData {
   String identifier;
   final String? Function(String?)? validator;
   final String? initialValue;
+  final String? title;
 
   FormFieldData({
     required this.prefixIcon,
@@ -15,6 +16,7 @@ class FormFieldData {
     required this.identifier,
     required this.validator,
     this.initialValue,
+    this.title,
   });
 
   static List<FormFieldData> fieldList = [
@@ -30,6 +32,7 @@ class FormFieldData {
         return null;
       },
       initialValue: 'Test Initial Value',
+      title: 'Sacco',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -42,7 +45,7 @@ class FormFieldData {
         }
         return null;
       },
-       initialValue: 'Test Initial Value',
+      initialValue: 'Test Initial Value',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -55,7 +58,7 @@ class FormFieldData {
         }
         return null;
       },
-       initialValue: 'Test Initial Value',
+      initialValue: 'Test Initial Value',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -69,7 +72,7 @@ class FormFieldData {
 
         return null;
       },
-       initialValue: 'Test Initial Value',
+      initialValue: 'Test Initial Value',
     ),
     // FormFieldData(
     //   prefixIcon: Icons.insert_emoticon,
