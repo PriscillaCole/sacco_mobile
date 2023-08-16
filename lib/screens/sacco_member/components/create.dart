@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 import 'package:sacco/services/api_service.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sacco/models/sacco_member.dart';
 import 'package:sacco/database/sacco_member_registration.dart';
 import 'package:sacco/components/custom_text_fields.dart';
@@ -18,6 +20,7 @@ class _BodyState extends State<Body> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final _apiService = ApiService('/sacco_members');
+    
 
   final Map<String, String> fieldValues = {};
 
@@ -51,79 +54,82 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ListView(
-          children: [
-            // Wrap your stack with a SingleChildScrollView
-            SingleChildScrollView(
-              child: Stack(
-                children: <Widget>[
-                  Card(
-                    elevation: 4.0,
-                    color: Colors.white,
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      // Use the Form widget to manage the form state
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Loop through form fields and create CustomTextFormField widgets
-                            for (var field in FormFieldData.fieldList)
-                              CustomTextFormField(
-                                prefixIcon: field.prefixIcon,
-                                hintText: field.hintText,
-                                keyboardType: field.keyboardType,
-                                validator: field.validator,
-                                onSaved: (value) {
-                                  setState(() {
-                                    field.identifier = value;
-                                  });
-                                },
-                              ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  // if (_formKey.currentState!.validate()) {
-                                  await _registerMember();
-                                  // }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kPrimaryColor,
-                                  padding: const EdgeInsets.only(
-                                      top: 8, bottom: 8, left: 10, right: 10),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0)),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Center(
+          child: ListView(
+            children: [
+              // Wrap your stack with a SingleChildScrollView
+              SingleChildScrollView(
+                child: Stack(
+                  children: <Widget>[
+                    Card(
+                      elevation: 4.0,
+                      color: Colors.white,
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        // Use the Form widget to manage the form state
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Loop through form fields and create CustomTextFormField widgets
+                              for (var field in FormFieldData.fieldList)
+                                CustomTextFormField(
+                                  prefixIcon: field.prefixIcon,
+                                  hintText: field.hintText,
+                                  keyboardType: field.keyboardType,
+                                  validator: field.validator,
+                                  onSaved: (value) {
+                                    setState(() {
+                                      field.identifier = value;
+                                    });
+                                  },
                                 ),
-                                child: Text(
-                                  _isLoading ? 'Processing...' : 'Register',
-                                  textDirection: TextDirection.ltr,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15.0,
-                                    decoration: TextDecoration.none,
-                                    fontWeight: FontWeight.normal,
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    // if (_formKey.currentState!.validate()) {
+                                    await _registerMember();
+                                    // }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kPrimaryColor,
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8, left: 10, right: 10),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0)),
+                                  ),
+                                  child: Text(
+                                    _isLoading ? 'Processing...' : 'Register',
+                                    textDirection: TextDirection.ltr,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15.0,
+                                      decoration: TextDecoration.none,
+                                      fontWeight: FontWeight.normal,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-
-                         
-                          ],
+      
+                           
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

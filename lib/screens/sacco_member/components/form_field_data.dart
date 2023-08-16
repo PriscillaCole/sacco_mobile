@@ -6,6 +6,7 @@ class FormFieldData {
   final TextInputType keyboardType;
   String identifier;
   final String? Function(String?)? validator;
+  final String? initialValue;
 
   FormFieldData({
     required this.prefixIcon,
@@ -13,6 +14,7 @@ class FormFieldData {
     required this.keyboardType,
     required this.identifier,
     required this.validator,
+    this.initialValue,
   });
 
   static List<FormFieldData> fieldList = [
@@ -27,6 +29,7 @@ class FormFieldData {
         }
         return null;
       },
+      initialValue: 'Test Initial Value',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -39,6 +42,7 @@ class FormFieldData {
         }
         return null;
       },
+       initialValue: 'Test Initial Value',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -51,7 +55,7 @@ class FormFieldData {
         }
         return null;
       },
-      
+       initialValue: 'Test Initial Value',
     ),
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
@@ -62,9 +66,10 @@ class FormFieldData {
         if (value == null || value.isEmpty) {
           return 'Please enter Date of Birth';
         }
-        
+
         return null;
       },
+       initialValue: 'Test Initial Value',
     ),
     // FormFieldData(
     //   prefixIcon: Icons.insert_emoticon,
@@ -75,7 +80,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please Select Gender';
     //     }
-        
+
     //     return null;
     //   },
     // ),
@@ -87,8 +92,8 @@ class FormFieldData {
     //   validator: (value) {
     //     if (value == null || value.isEmpty) {
     //       return 'Please Select Image';
-    //     } 
-    //     return null; 
+    //     }
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -99,8 +104,8 @@ class FormFieldData {
     //    validator: (value) {
     //     if (value == null || value.isEmpty) {
     //       return 'Please Select Nationality';
-    //     } 
-    //     return null; 
+    //     }
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -112,7 +117,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Identification Number';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -124,8 +129,8 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Physical Address';
     //     }
-        
-    //     return null; 
+
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -137,7 +142,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Postal Address';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -161,7 +166,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Phone Number';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -173,7 +178,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Employment Status';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -185,7 +190,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Employer Name';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
 
@@ -198,7 +203,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Monthly Income';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -210,7 +215,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Bank Account Number';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -222,7 +227,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Bank Name';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -234,10 +239,10 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Membership Type';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
-    
+
     // FormFieldData(
     //   prefixIcon: Icons.insert_emoticon,
     //   hintText: "Next of Kin",
@@ -247,7 +252,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Next of Kin';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -259,7 +264,7 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Next of Kin Contact';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -269,9 +274,9 @@ class FormFieldData {
     //   identifier: "_beneficiaryName",
     //   validator: (value) {
     //     if (value == null || value.isEmpty) {
-    //       return 'Please enter Beneficiary Name'; 
+    //       return 'Please enter Beneficiary Name';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
     // FormFieldData(
@@ -283,9 +288,8 @@ class FormFieldData {
     //     if (value == null || value.isEmpty) {
     //       return 'Please enter Beneficiary Relationship';
     //     }
-    //     return null; 
+    //     return null;
     //   },
     // ),
-   
   ];
 }

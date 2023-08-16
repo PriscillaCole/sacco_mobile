@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sacco/screens/home/home_screen.dart';
 import 'package:sacco/screens/profile/profile_screen.dart';
-import 'package:sacco/screens/sacco_member/sacco_member.dart';
-import 'package:sacco/screens/sacco_member/view_application.dart';
+import 'package:sacco/screens/sacco_member/create_sacco_member.dart';
+import 'package:sacco/screens/sacco_member/view_sacco_application.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +52,7 @@ class CustomBottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () async {
-                  print("user");
+                 
                   SharedPreferences localStorage =
                       await SharedPreferences.getInstance();
                   var user = localStorage.getString('user');
@@ -76,10 +76,12 @@ class CustomBottomNavBar extends StatelessWidget {
                       // User exists, navigate to a different page
                       //return
                       print('User exists');
+                       // ignore: use_build_context_synchronously
                        Navigator.pushNamed(
                       context, UsersListScreen.routeName);
                     } else {
                       // User doesn't exist, send them to the registration page
+                       // ignore: use_build_context_synchronously
                        Navigator.pushNamed(
                        context, SaccoMemberRegistration.routeName);
                     }

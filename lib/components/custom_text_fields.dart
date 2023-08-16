@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final IconData prefixIcon;
-  final String hintText;
+  final String? hintText;
   final TextInputType keyboardType;
   final void Function(String)? onSaved;
   final String? Function(String?)? validator;
+  final String? initialValue;
+
 
   CustomTextFormField({
     required this.prefixIcon,
-    required this.hintText,
+    this.hintText,
     required this.keyboardType,
     required this.onSaved,
-    required this.validator,
+    required this.validator, 
+     this.initialValue, 
   });
 
   @override
@@ -25,7 +28,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
     super.initState();
-    fieldValue = '';
+    fieldValue = widget.initialValue ?? '';
   }
 
   @override

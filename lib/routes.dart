@@ -7,10 +7,10 @@ import 'package:sacco/screens/home/home_screen.dart';
 import 'package:sacco/screens/login_success/login_success_screen.dart';
 import 'package:sacco/screens/otp/otp_screen.dart';
 import 'package:sacco/screens/profile/profile_screen.dart';
-import 'package:sacco/screens/sacco_member/sacco_member.dart';
+import 'package:sacco/screens/sacco_member/create_sacco_member.dart';
 import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 import 'package:sacco/screens/splash/splash_screen.dart';
-import 'package:sacco/screens/sacco_member/view_application.dart';
+import 'package:sacco/screens/sacco_member/view_sacco_application.dart';
 
 
 

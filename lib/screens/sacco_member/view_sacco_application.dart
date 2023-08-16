@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sacco/services/api_service.dart';
+import 'package:sacco/screens/sacco_member/components/edit.dart';   
 import '../../constants.dart';
 
 class UsersListScreen extends StatefulWidget {
@@ -10,6 +11,14 @@ class UsersListScreen extends StatefulWidget {
 }
 
 class _UsersListScreenState extends State<UsersListScreen> {
+    void _handleEditUser(Map<String, dynamic> userData) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Body(userData: userData),
+      ),
+    );
+  }
   final ApiService apiService = ApiService('/sacco_members');
   List<Map<String, dynamic>> users = [];
 
@@ -55,8 +64,7 @@ class _UsersListScreenState extends State<UsersListScreen> {
               trailing: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  // Handle edit icon tap
-                  // You can open an edit screen or perform any action here
+                   _handleEditUser(users[index]);
                 },
               ),
             ),
