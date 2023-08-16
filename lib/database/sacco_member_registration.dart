@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sacco/models/sacco_member.dart';
@@ -13,8 +15,8 @@ class DatabaseHelper {
         db.execute('''
           CREATE TABLE sacco_members(
             id INTEGER PRIMARY KEY,
-            sacco_id TEXT,
-            user_id TEXT,
+            sacco_id INTEGER,
+            user_id INTEGER,
             full_name TEXT,
             date_of_birth TEXT,
             gender TEXT,
@@ -46,7 +48,9 @@ class DatabaseHelper {
   }
 
   Future<void> insertSaccoMember(SaccoMember saccoMember) async {
+    print('Inserting sacco member');
     await _database.insert('sacco_members', saccoMember.toJson());
+    print('Sacco member inserted successfully');
   }
 
   Future<List<SaccoMember>> getSaccoMembers() async {
@@ -75,7 +79,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<bool> checkUserExists(String userId) async {
+  Future<bool> checkUserExists(int userId) async {
     print('Checking if user exists');
     final db = await _database; // Ensure _database is initialized
 
@@ -86,5 +90,20 @@ class DatabaseHelper {
     print('Count: $count');
 
     return count! > 0;
+  }
+
+  Future<void> getAllSaccoMembers() async {
+    print('Fetching all Sacco members');
+    final db = await _database; // Ensure _database is initialized
+
+    final List<Map<String, dynamic>> members = await db.query('sacco_members');
+
+    if (members.isNotEmpty) {
+      for (final member in members) {
+        print('User ID: ${member['user_id']}, Email: ${member['email']}');
+      }
+    } else {
+      print('No Sacco members found.');
+    }
   }
 }

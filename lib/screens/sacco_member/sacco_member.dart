@@ -6,9 +6,9 @@ import 'package:sacco/enums.dart';
 
 
 
-class SaccoMember extends StatelessWidget {
+class SaccoMemberRegistration extends StatelessWidget {
   static String routeName = "/sacco_member";
-  const SaccoMember({super.key});
+  const SaccoMemberRegistration({super.key});
 
   @override
   Widget build(BuildContext context) {

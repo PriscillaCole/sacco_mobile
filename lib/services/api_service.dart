@@ -22,19 +22,20 @@ class ApiService {
         print('Response data: ${response.data}');
       }
     } catch (error) {
-    // Handle DioException
-    // ignore: deprecated_member_use
-    if (error is DioError) {
-      print('DioError: ${error.message}');
-      if (error.response != null) {
-        print('Response data: ${error.response?.data}');
+      // Handle DioException
+      // ignore: deprecated_member_use
+      if (error is DioError) {
+        print('DioError: ${error.message}');
+
+        if (error.response != null) {
+          print('Response data: ${error.response?.data}');
+        }
+      } else {
+        // Handle other exceptions
+        print('Error creating user: $error');
       }
-    } else {
-      // Handle other exceptions
-      print('Error creating user: $error');
     }
   }
-}
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     try {
@@ -50,6 +51,27 @@ class ApiService {
     } catch (error) {
       print('Error fetching users: $error');
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> getUserById(String userId) async {
+    print('$baseUrl$apiUrl/$userId');
+    try {
+      final response = await dio.get(
+          '$baseUrl$apiUrl/$userId'); // Modify the URL to include the user ID
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userData = response.data;
+         print(userData);
+        return userData;
+       
+      } else {
+        print('Failed to fetch user with status code: ${response.statusCode}');
+        return {};
+      }
+    } catch (error) {
+      print('Error fetching user: $error');
+      return {};
     }
   }
 

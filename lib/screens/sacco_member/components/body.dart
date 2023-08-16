@@ -163,8 +163,8 @@ class _BodyState extends State<Body> {
     // };
     final data = {
   'sacco_id': 15,
-  'user_id': 2,
-  'full_name': 'John Doe',
+  'user_id': 6,
+  'full_name': 'Jane Doe',
   'date_of_birth': '1990-05-15',
   'gender': 'Male',
   'image': 'https://example.com/profile.jpg',
@@ -191,36 +191,38 @@ class _BodyState extends State<Body> {
 
 
     try {
-      await _apiService.createUser(data);
+     var userResponse = await _apiService.createUser(data);
+
+      
 
       // Store user in SQLite
       final saccoMember = SaccoMember(
         id: DateTime.now().millisecondsSinceEpoch,
-        saccoId: _saccoId,
-        userId: _userId,
-        fullName: _fullName,
-        dateOfBirth: _dateOfBirth,
-        gender: _gender,
-        image: _image,
-        nationality: _nationality,
-        identificationNumber: _identificationNumber,
-        physicalAddress: _physicalAddress,
-        postalAddress: _postalAddress,
-        email: _email,
-        phoneNumber: _phoneNumber,
-        employmentStatus: _employmentStatus,
-        employerName: _employerName,
-        monthlyIncome: _monthlyIncome,
-        bankAccountNumber: _bankAccountNumber,
-        bankName: _bankName,
-        membershipType: _membershipType,
-        membershipId: _membershipId,
-        dateOfJoining: _dateOfJoining,
-        nextOfKinName: _nextOfKinName,
-        nextOfKinContact: _nextOfKinContact,
-        beneficiaryName: _beneficiaryName,
-        beneficiaryRelationship: _beneficiaryRelationship,
-        status: _status,
+        saccoId: '12',
+        userId: '6',
+        fullName: '_fullName',
+        dateOfBirth: '_dateOfBirth',
+        gender: '_gender',
+        image: '_image',
+        nationality: '_nationality',
+        identificationNumber: 12,
+        physicalAddress: '_physicalAddress',
+        postalAddress: '_postalAddress',
+        email: '_email',
+        phoneNumber:344556,
+        employmentStatus:'_employmentStatus',
+        employerName:'_employerName',
+        monthlyIncome: 9900998,
+        bankAccountNumber: 8909768,
+        bankName: '_bankName',
+        membershipType: '_membershipType',
+        membershipId: '_membershipId',
+        dateOfJoining: '_dateOfJoining',
+        nextOfKinName: '_nextOfKinName',
+        nextOfKinContact: 900009989,
+        beneficiaryName:' _beneficiaryName',
+        beneficiaryRelationship: '_beneficiaryRelationship',
+        status: '_status',
       );
 
       // Create an instance of DatabaseHelper
