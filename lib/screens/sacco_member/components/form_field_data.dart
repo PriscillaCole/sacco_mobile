@@ -20,34 +20,7 @@ class FormFieldData {
   });
 
   static List<FormFieldData> fieldList = [
-    FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
-      hintText: "Sacco ID",
-      keyboardType: TextInputType.text,
-      identifier: "_saccoId",
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please select Sacco';
-        }
-        return null;
-      },
-      initialValue: 'Test Initial Value',
-      title: 'Sacco',
-    ),
-    FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
-      hintText: "User ID",
-      keyboardType: TextInputType.text,
-      identifier: "_userId",
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter User ID';
-        }
-        return null;
-      },
-      initialValue: 'Test Initial Value',
-      title: 'User',
-    ),
+    
     FormFieldData(
       prefixIcon: Icons.insert_emoticon,
       hintText: "Full Name",

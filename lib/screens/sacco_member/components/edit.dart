@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sacco/constants.dart';
-import 'package:sacco/screens/sign_in/sign_in_screen.dart';
 import 'package:sacco/services/api_service.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sacco/models/sacco_member.dart';
 import 'package:sacco/database/sacco_member_registration.dart';
 import 'package:sacco/components/custom_text_fields.dart';
@@ -25,35 +22,33 @@ class _BodyState extends State<Body> {
 
   Map<String, dynamic> fieldValues = {};
 
-  
   final Map<String, String> identifierToKey = {
     // Map field.identifier to the corresponding keys in fieldValues
     '_saccoId': 'sacco_id',
     '_userId': 'user_id',
     '_fullName': 'full_name',
     '_dateOfBirth': 'date_of_birth',
-    '_gender':'gender',
-    '_image':'image',
-    '_nationality':'nationality',
-    '_identificationNumber':'identification_number',
-    '_physicalAddress':'physical_address',
-    '_postalAddress':'postal_address',
-    '_email':'email',
-    '_phoneNumber':'phone_number',
-    '_employmentStatus':'employment_status',
-    '_employerName':'employer_name',
-    '_monthlyIncome':'monthly_income',
-    '_bankAccountNumber':'bank_account_number',
-    '_bankName':'bank_name',
-    '_membershipType':'membership_type',
-    '_membershipId':'membership_id',
-    '_dateOfJoining':'date_of_joining',
-    '_nextOfKinName':'next_of_kin_name',
-    '_nextOfKinContact':'next_of_kin_contact',
-    '_beneficiaryName':'beneficiary_name',
-    '_beneficiaryRelationship':'beneficiary_relationship',
-    '_status':'status',
-    
+    '_gender': 'gender',
+    '_image': 'image',
+    '_nationality': 'nationality',
+    '_identificationNumber': 'identification_number',
+    '_physicalAddress': 'physical_address',
+    '_postalAddress': 'postal_address',
+    '_email': 'email',
+    '_phoneNumber': 'phone_number',
+    '_employmentStatus': 'employment_status',
+    '_employerName': 'employer_name',
+    '_monthlyIncome': 'monthly_income',
+    '_bankAccountNumber': 'bank_account_number',
+    '_bankName': 'bank_name',
+    '_membershipType': 'membership_type',
+    '_membershipId': 'membership_id',
+    '_dateOfJoining': 'date_of_joining',
+    '_nextOfKinName': 'next_of_kin_name',
+    '_nextOfKinContact': 'next_of_kin_contact',
+    '_beneficiaryName': 'beneficiary_name',
+    '_beneficiaryRelationship': 'beneficiary_relationship',
+    '_status': 'status',
   };
 
   @override
@@ -223,7 +218,7 @@ class _BodyState extends State<Body> {
     });
 
     final data = {
-      'user_id': fieldValues['user_id'], 
+      'user_id': fieldValues['user_id'],
       'sacco_id': fieldValues['sacco_id'],
       'full_name': fieldValues['full_name'],
       'date_of_birth': fieldValues['date_of_birth'],
@@ -256,8 +251,8 @@ class _BodyState extends State<Body> {
       // Store user in SQLite
       final saccoMember = SaccoMember(
         id: DateTime.now().millisecondsSinceEpoch,
-        saccoId: fieldValues['sacco_id'],
-        userId: fieldValues['user_id'],
+        saccoId: fieldValues['sacco_id'].toString(),
+        userId: fieldValues['user_id'].toString(),
         fullName: fieldValues['full_name'],
         dateOfBirth: fieldValues['date_of_birth'],
         gender: fieldValues['gender'],
@@ -282,7 +277,8 @@ class _BodyState extends State<Body> {
         beneficiaryRelationship: fieldValues['beneficiary_relationship'],
         status: fieldValues['status'],
       );
-
+   
+      print('hi');
       // Create an instance of DatabaseHelper
       final DatabaseHelper databaseHelper = DatabaseHelper();
 

@@ -52,11 +52,10 @@ class CustomBottomNavBar extends StatelessWidget {
                       : inActiveIconColor,
                 ),
                 onPressed: () async {
-                 
                   SharedPreferences localStorage =
                       await SharedPreferences.getInstance();
                   var user = localStorage.getString('user');
-
+                  print(user);
                   final DatabaseHelper databaseHelper = DatabaseHelper();
 
                   // Ensure the database is initialized
@@ -66,23 +65,20 @@ class CustomBottomNavBar extends StatelessWidget {
 
                   if (user != null) {
                     var userId = jsonDecode(user)['id'];
-                    String userIdString = userId.toString();
-                    bool userExists =
-                        await databaseHelper.checkUserExists(6);
+                  
+                    bool userExists = await databaseHelper.checkUserExists(userId);
                     if (userExists) {
                       // User exists, navigate to a different page
-                       // ignore: use_build_context_synchronously
-                       Navigator.pushNamed(
-                      context, UsersListScreen.routeName);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(context, UsersListScreen.routeName);
                     } else {
                       // User doesn't exist, send them to the registration page
-                       // ignore: use_build_context_synchronously
-                       Navigator.pushNamed(
-                       context, SaccoMemberRegistration.routeName);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(
+                          context, SaccoMemberRegistration.routeName);
                     }
                   }
-                }
-                ),
+                }),
             IconButton(
               icon: SvgPicture.asset(
                 "assets/icons/User Icon.svg",

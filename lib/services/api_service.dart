@@ -73,13 +73,13 @@ class ApiService {
   }
 
   Future<void> updateUser(int userId, Map<String, dynamic> updatedData) async {
-    print(updatedData);
+  
     try {
       final response = await dio.put(
         '$baseUrl$apiUrl/6',
         data: updatedData,
       );
-      print(userId);
+   
       if (response.statusCode == 200) {
         print('User updated successfully');
       } else {

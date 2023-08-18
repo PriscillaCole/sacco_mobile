@@ -28,7 +28,9 @@ class SaccoMember {
   String? password;
 
   SaccoMember(
-      {this.saccoId,
+      {
+      this.id, 
+      this.saccoId,
       this.userId,
       this.fullName,
       this.dateOfBirth,
@@ -53,7 +55,7 @@ class SaccoMember {
       this.beneficiaryName,
       this.beneficiaryRelationship,
       this.status,
-      this.password, required int id});
+      this.password, });
 
   SaccoMember.fromJson(Map<String, dynamic> json) {
     saccoId = json['sacco_id'];
@@ -114,4 +116,6 @@ class SaccoMember {
     data['password'] = password;
     return data;
   }
+
+  
 }
