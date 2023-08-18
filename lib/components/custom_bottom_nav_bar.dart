@@ -69,13 +69,8 @@ class CustomBottomNavBar extends StatelessWidget {
                     String userIdString = userId.toString();
                     bool userExists =
                         await databaseHelper.checkUserExists(6);
-                   
-                    // Rest of your code
-                    print('hi');
                     if (userExists) {
                       // User exists, navigate to a different page
-                      //return
-                      print('User exists');
                        // ignore: use_build_context_synchronously
                        Navigator.pushNamed(
                       context, UsersListScreen.routeName);

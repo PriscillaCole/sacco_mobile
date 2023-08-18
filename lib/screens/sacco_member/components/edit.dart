@@ -25,39 +25,42 @@ class _BodyState extends State<Body> {
 
   Map<String, dynamic> fieldValues = {};
 
-  final String _saccoId = '';
-  final String _userId = '';
-  final String _fullName = '';
-  final String _dateOfBirth = '';
-  final String _gender = '';
-  final String _image = '';
-  final String _nationality = '';
-  final int _identificationNumber = 0;
-  final String _physicalAddress = '';
-  final String _postalAddress = '';
-  final String _email = '';
-  final int _phoneNumber = 0;
-  final String _employmentStatus = '';
-  final String _employerName = '';
-  final int _monthlyIncome = 0;
-  final int _bankAccountNumber = 0;
-  final String _bankName = '';
-  final String _membershipType = '';
-  final String _membershipId = '';
-  final String _dateOfJoining = '';
-  final String _nextOfKinName = '';
-  final int _nextOfKinContact = 0;
-  final String _beneficiaryName = '';
-  final String _beneficiaryRelationship = '';
-  final String _status = '';
-  final String _password = '';
+  
+  final Map<String, String> identifierToKey = {
+    // Map field.identifier to the corresponding keys in fieldValues
+    '_saccoId': 'sacco_id',
+    '_userId': 'user_id',
+    '_fullName': 'full_name',
+    '_dateOfBirth': 'date_of_birth',
+    '_gender':'gender',
+    '_image':'image',
+    '_nationality':'nationality',
+    '_identificationNumber':'identification_number',
+    '_physicalAddress':'physical_address',
+    '_postalAddress':'postal_address',
+    '_email':'email',
+    '_phoneNumber':'phone_number',
+    '_employmentStatus':'employment_status',
+    '_employerName':'employer_name',
+    '_monthlyIncome':'monthly_income',
+    '_bankAccountNumber':'bank_account_number',
+    '_bankName':'bank_name',
+    '_membershipType':'membership_type',
+    '_membershipId':'membership_id',
+    '_dateOfJoining':'date_of_joining',
+    '_nextOfKinName':'next_of_kin_name',
+    '_nextOfKinContact':'next_of_kin_contact',
+    '_beneficiaryName':'beneficiary_name',
+    '_beneficiaryRelationship':'beneficiary_relationship',
+    '_status':'status',
+    
+  };
 
   @override
   void initState() {
     super.initState();
 
     if (widget.userData != null) {
-      print(widget.userData);
       fieldValues = Map.from(widget.userData!);
     }
   }
@@ -70,7 +73,7 @@ class _BodyState extends State<Body> {
         backgroundColor: kPrimaryColor,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20, bottom: 20),
         child: Center(
           child: ListView(
             children: [
@@ -104,7 +107,8 @@ class _BodyState extends State<Body> {
                                   validator: field.validator,
                                   onSaved: (value) {
                                     setState(() {
-                                      fieldValues[field.identifier] = value;
+                                      fieldValues[identifierToKey[
+                                          field.identifier]!] = value;
                                     });
                                   },
                                 ),
@@ -156,14 +160,58 @@ class _BodyState extends State<Body> {
     switch (identifier) {
       // Implement the logic to return the corresponding field value
       case '_saccoId':
-         return fieldValues['sacco_id'].toString();
+        return fieldValues['sacco_id'].toString();
       case '_userId':
-         return fieldValues['user_id'].toString();
+        return fieldValues['user_id'].toString();
       case '_fullName':
-         return fieldValues['full_name'].toString();
+        return fieldValues['full_name'].toString();
       case '_dateOfBirth':
-         return fieldValues['date_of_birth'].toString();
-      // Add cases for other fields
+        return fieldValues['date_of_birth'].toString();
+      case '_gender':
+        return fieldValues['gender'].toString();
+      case '_image':
+        return fieldValues['image'].toString();
+      case '_nationality':
+        return fieldValues['nationality'].toString();
+      case '_identificationNumber':
+        return fieldValues['identification_number'].toString();
+      case '_physicalAddress':
+        return fieldValues['physical_address'].toString();
+      case '_postalAddress':
+        return fieldValues['postal_address'].toString();
+      case '_email':
+        return fieldValues['email'].toString();
+      case '_phoneNumber':
+        return fieldValues['phone_number'].toString();
+      case '_employmentStatus':
+        return fieldValues['employment_status'].toString();
+      case '_employerName':
+        return fieldValues['employer_name'].toString();
+      case '_monthlyIncome':
+        return fieldValues['monthly_income'].toString();
+      case '_bankAccountNumber':
+        return fieldValues['bank_account_number'].toString();
+      case '_bankName':
+        return fieldValues['bank_name'].toString();
+      case '_membershipType':
+        return fieldValues['membership_type'].toString();
+      case '_membershipId':
+        return fieldValues['membership_id'].toString();
+      case '_dateOfJoining':
+        return fieldValues['date_of_joining'].toString();
+      case '_nextOfKinName':
+        return fieldValues['next_of_kin_name'].toString();
+      case '_nextOfKinContact':
+        return fieldValues['next_of_kin_contact'].toString();
+      case '_beneficiaryName':
+        return fieldValues['beneficiary_name'].toString();
+      case '_beneficiaryRelationship':
+        return fieldValues['beneficiary_relationship'].toString();
+      case '_status':
+        return fieldValues['status'].toString();
+      case '_password':
+        return fieldValues['password'].toString();
+
       default:
         return '';
     }
@@ -175,8 +223,8 @@ class _BodyState extends State<Body> {
     });
 
     final data = {
+      'user_id': fieldValues['user_id'], 
       'sacco_id': fieldValues['sacco_id'],
-      'user_id': fieldValues['user_id'],
       'full_name': fieldValues['full_name'],
       'date_of_birth': fieldValues['date_of_birth'],
       'gender': fieldValues['gender'],
@@ -187,10 +235,10 @@ class _BodyState extends State<Body> {
       'postal_address': fieldValues['postal_address'],
       'email': fieldValues['email'],
       'phone_number': fieldValues['phone_number'],
-      'employment_status': fieldValues['employment_status'],
-      'employer_name': fieldValues['employer_name'],
-      'monthly_income': fieldValues['monthly_income'],
-      'bank_account_number': fieldValues['bank_account_number'],
+      'employment_status': fieldValues['_employment_status'],
+      'employer_name': fieldValues['_employer_name'],
+      'monthly_income': fieldValues['_monthly_income'],
+      'bank_account_number': fieldValues['_bank_account_number'],
       'bank_name': fieldValues['bank_name'],
       'membership_type': fieldValues['membership_type'],
       'membership_id': fieldValues['membership_id'],
@@ -203,7 +251,7 @@ class _BodyState extends State<Body> {
     };
 
     try {
-      await _apiService.createUser(data);
+      await _apiService.updateUser(fieldValues['user_id'], data);
 
       // Store user in SQLite
       final saccoMember = SaccoMember(
@@ -240,11 +288,11 @@ class _BodyState extends State<Body> {
 
       //initialize the database
       await databaseHelper.initialize();
-      await databaseHelper.insertSaccoMember(saccoMember);
+      await databaseHelper.updateSaccoMember(saccoMember);
 
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User registered successfully')),
+        const SnackBar(content: Text('User updated successfully')),
       );
       setState(() {
         _isLoading = false;
@@ -252,7 +300,7 @@ class _BodyState extends State<Body> {
     } catch (error) {
       //print('Error inserting into database: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to register user')),
+        const SnackBar(content: Text('Failed to update user')),
       );
       setState(() {
         _isLoading = false;

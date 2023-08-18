@@ -80,14 +80,12 @@ class DatabaseHelper {
   }
 
   Future<bool> checkUserExists(int userId) async {
-    print('Checking if user exists');
     final db = await _database; // Ensure _database is initialized
 
     final count = Sqflite.firstIntValue(await db.rawQuery(
       'SELECT COUNT(*) FROM sacco_members WHERE user_id = ?',
       [userId],
     ));
-    print('Count: $count');
 
     return count! > 0;
   }

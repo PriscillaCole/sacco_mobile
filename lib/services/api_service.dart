@@ -8,13 +8,12 @@ class ApiService {
   ApiService(this.apiUrl);
 
   Future<void> createUser(Map<String, dynamic> userData) async {
-    print(baseUrl + apiUrl);
     try {
       final response = await dio.post(
         baseUrl + apiUrl,
         data: userData,
       );
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         print('User created successfully');
       } else {
@@ -55,16 +54,14 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> getUserById(String userId) async {
-    print('$baseUrl$apiUrl/$userId');
     try {
       final response = await dio.get(
           '$baseUrl$apiUrl/$userId'); // Modify the URL to include the user ID
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userData = response.data;
-         print(userData);
+
         return userData;
-       
       } else {
         print('Failed to fetch user with status code: ${response.statusCode}');
         return {};
@@ -76,12 +73,13 @@ class ApiService {
   }
 
   Future<void> updateUser(int userId, Map<String, dynamic> updatedData) async {
+    print(updatedData);
     try {
       final response = await dio.put(
-        '$baseUrl + $apiUrl/$userId',
+        '$baseUrl$apiUrl/6',
         data: updatedData,
       );
-
+      print(userId);
       if (response.statusCode == 200) {
         print('User updated successfully');
       } else {
