@@ -20,36 +20,31 @@ class _BodyState extends State<Body> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final _apiService = ApiService('/sacco_members');
-  
 
   final Map<String, String> fieldValues = {};
 
-  final String _saccoId = '';
-  final String _userId = '';
-  final String _fullName = '';
-  final String _dateOfBirth = '';
-  final String _gender = '';
-  final String _image = '';
-  final String _nationality = '';
-  final int _identificationNumber = 0;
-  final String _physicalAddress = '';
-  final String _postalAddress = '';
-  final String _email = '';
-  final int _phoneNumber = 0;
-  final String _employmentStatus = '';
-  final String _employerName = '';
-  final int _monthlyIncome = 0;
-  final int _bankAccountNumber = 0;
-  final String _bankName = '';
-  final String _membershipType = '';
-  final String _membershipId = '';
-  final String _dateOfJoining = '';
-  final String _nextOfKinName = '';
-  final int _nextOfKinContact = 0;
-  final String _beneficiaryName = '';
-  final String _beneficiaryRelationship = '';
-  final String _status = '';
-  final String _password = '';
+  String _fullName = '';
+  String _dateOfBirth = '';
+  String _gender = '';
+  String _image = '';
+  String _nationality = '';
+  int _identificationNumber = 0;
+  String _physicalAddress = '';
+  String _postalAddress = '';
+  String _email = '';
+  int _phoneNumber = 0;
+  String _employmentStatus = '';
+  String _employerName = '';
+  int _monthlyIncome = 0;
+  int _bankAccountNumber = 0;
+  String _bankName = '';
+  String _membershipType = '';
+  String _membershipId = '';
+  String _dateOfJoining = '';
+  String _nextOfKinName = '';
+  int _nextOfKinContact = 0;
+  String _beneficiaryName = '';
+  String _beneficiaryRelationship = '';
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +81,69 @@ class _BodyState extends State<Body> {
                                   validator: field.validator,
                                   onSaved: (value) {
                                     setState(() {
-                                      field.identifier = value;
+                                      // Update the respective variable based on the field identifier
+                                      if (field.identifier == "_fullName") {
+                                        _fullName = value;
+                                      } else if (field.identifier ==
+                                          "_dateOfBirth") {
+                                        _dateOfBirth = value;
+                                      } else if (field.identifier ==
+                                          "_gender") {
+                                        _gender = value;
+                                      } else if (field.identifier == "_image") {
+                                        _image = value;
+                                      } else if (field.identifier ==
+                                          "_nationality") {
+                                        _nationality = value;
+                                      } else if (field.identifier ==
+                                          "_identificationNumber") {
+                                        _identificationNumber =
+                                            int.parse(value);
+                                      } else if (field.identifier ==
+                                          "_physicalAddress") {
+                                        _physicalAddress = value;
+                                      } else if (field.identifier ==
+                                          "_postalAddress") {
+                                        _postalAddress = value;
+                                      } else if (field.identifier == "_email") {
+                                        _email = value;
+                                      } else if (field.identifier ==
+                                          "_phoneNumber") {
+                                        _phoneNumber = int.parse(value);
+                                      } else if (field.identifier ==
+                                          "_employmentStatus") {
+                                        _employmentStatus = value;
+                                      } else if (field.identifier ==
+                                          "_employerName") {
+                                        _employerName = value;
+                                      } else if (field.identifier ==
+                                          "_monthlyIncome") {
+                                        _monthlyIncome = int.parse(value);
+                                      } else if (field.identifier ==
+                                          "_bankAccountNumber") {
+                                        _bankAccountNumber = int.parse(value);
+                                      } else if (field.identifier ==
+                                          "_bankName") {
+                                        _bankName = value;
+                                      } else if (field.identifier ==
+                                          "_membershipType") {
+                                        _membershipType = value;
+                                      } else if (field.identifier ==
+                                          "_dateOfJoining") {
+                                        _dateOfJoining = value;
+                                      } else if (field.identifier ==
+                                          "_nextOfKinName") {
+                                        _nextOfKinName = value;
+                                      } else if (field.identifier ==
+                                          "_nextOfKinContact") {
+                                        _nextOfKinContact = int.parse(value);
+                                      } else if (field.identifier ==
+                                          "_beneficiaryName") {
+                                        _beneficiaryName = value;
+                                      } else if (field.identifier ==
+                                          "_beneficiaryRelationship") {
+                                        _beneficiaryRelationship = value;
+                                      }
                                     });
                                   },
                                 ),
@@ -94,9 +151,9 @@ class _BodyState extends State<Body> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    // if (_formKey.currentState!.validate()) {
-                                    await _registerMember();
-                                    // }
+                                    if (_formKey.currentState!.validate()) {
+                                      await _registerMember();
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kPrimaryColor,
@@ -106,15 +163,33 @@ class _BodyState extends State<Body> {
                                         borderRadius:
                                             BorderRadius.circular(20.0)),
                                   ),
-                                  child: Text(
-                                    _isLoading ? 'Processing...' : 'Register',
-                                    textDirection: TextDirection.ltr,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      _isLoading
+                                          ? const CircularProgressIndicator(
+                                              valueColor: AlwaysStoppedAnimation<
+                                                      Color>(
+                                                  Colors
+                                                      .white), // Set the color to white
+                                            ) // Show the loading spinner
+                                          : const SizedBox(), // Hide the spinner when not loading
+                                      const SizedBox(
+                                          width:
+                                              8.0), // Adding some space between the spinner and the text
+                                      Text(
+                                        _isLoading
+                                            ? 'Processing...'
+                                            : 'Register',
+                                        textDirection: TextDirection.ltr,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decoration: TextDecoration.none,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -138,16 +213,15 @@ class _BodyState extends State<Body> {
       _isLoading = true;
     });
 
-     SharedPreferences localStorage = await SharedPreferences.getInstance();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
     var user = localStorage.getString('user');
-    String userId = ''; 
+    int userId = 0;
     if (user != null) {
-       userId = jsonDecode(user)['id'];
-      
+      userId = jsonDecode(user)['id'];
     }
-
+    //print(userId);
     final data = {
-      'sacco_id': 1,
+      'sacco_id': 15,
       'user_id': userId,
       'full_name': _fullName,
       'date_of_birth': _dateOfBirth,
@@ -165,23 +239,22 @@ class _BodyState extends State<Body> {
       'bank_account_number': _bankAccountNumber,
       'bank_name': _bankName,
       'membership_type': _membershipType,
-      'membership_id': _membershipId,
       'date_of_joining': _dateOfJoining,
       'next_of_kin_name': _nextOfKinName,
       'next_of_kin_contact': _nextOfKinContact,
       'beneficiary_name': _beneficiaryName,
       'beneficiary_relationship': _beneficiaryRelationship,
-      'status': _status,
+      'status': 'pending',
     };
-
+    print(data);
     try {
       var userResponse = await _apiService.createUser(data);
 
       // Store user in SQLite
       final saccoMember = SaccoMember(
         id: DateTime.now().millisecondsSinceEpoch,
-        saccoId: '1',
-        userId: userId,
+        saccoId: '15',
+        userId: userId.toString(),
         fullName: _fullName,
         dateOfBirth: _dateOfBirth,
         gender: _gender,
@@ -204,7 +277,6 @@ class _BodyState extends State<Body> {
         nextOfKinContact: _nextOfKinContact,
         beneficiaryName: _beneficiaryName,
         beneficiaryRelationship: _beneficiaryRelationship,
-        status: _status,
       );
 
       // Create an instance of DatabaseHelper

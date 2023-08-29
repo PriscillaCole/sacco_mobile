@@ -8,6 +8,8 @@ class FormFieldData {
   final String? Function(String?)? validator;
   final String? initialValue;
   final String? title;
+  final List<String>? dropdownItems;
+  final String? dropdownValue;
 
   FormFieldData({
     required this.prefixIcon,
@@ -17,12 +19,13 @@ class FormFieldData {
     required this.validator,
     this.initialValue,
     this.title,
+    this.dropdownItems,
+    this.dropdownValue,
   });
 
   static List<FormFieldData> fieldList = [
-    
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.person,
       hintText: "Full Name",
       keyboardType: TextInputType.text,
       identifier: "_fullName",
@@ -36,9 +39,9 @@ class FormFieldData {
       title: 'Full Name',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.calendar_today,
       hintText: "Date of Birth",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.datetime,
       identifier: "_dateOfBirth",
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -51,7 +54,7 @@ class FormFieldData {
       title: 'Date of Birth',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.wc,
       hintText: "Gender",
       keyboardType: TextInputType.text,
       identifier: "_gender",
@@ -59,13 +62,14 @@ class FormFieldData {
         if (value == null || value.isEmpty) {
           return 'Please Select Gender';
         }
-
         return null;
       },
-      title: '  Gender'
+      title: 'Gender',
+      dropdownItems: ['Male', 'Female'], // List of dropdown items
+      dropdownValue: 'Male', // Select 'Male' or 'Female'
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.image,
       hintText: "Image",
       keyboardType: TextInputType.text,
       identifier: "_image",
@@ -78,22 +82,21 @@ class FormFieldData {
       title: 'Image',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
-      hintText: "Nationality",
-      keyboardType: TextInputType.text,
-      identifier: "_nationality",
-       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please Select Nationality';
-        }
-        return null;
-      },
-      title: 'Nationality'
-    ),
+        prefixIcon: Icons.flag,
+        hintText: "Nationality",
+        keyboardType: TextInputType.text,
+        identifier: "_nationality",
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please Select Nationality';
+          }
+          return null;
+        },
+        title: 'Nationality'),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.format_list_numbered,
       hintText: "Identification Number",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       identifier: "_identificationNumber",
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -104,7 +107,7 @@ class FormFieldData {
       title: 'Identification Number',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.location_on,
       hintText: "Physical Address",
       keyboardType: TextInputType.text,
       identifier: "_physicalAddress",
@@ -118,7 +121,7 @@ class FormFieldData {
       title: 'Physical Address',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.local_post_office,
       hintText: "Postal Address",
       keyboardType: TextInputType.text,
       identifier: "_postalAddress",
@@ -131,7 +134,7 @@ class FormFieldData {
       title: 'Postal Address',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.email,
       hintText: "Email Address",
       keyboardType: TextInputType.text,
       identifier: "_email",
@@ -139,14 +142,19 @@ class FormFieldData {
         if (value == null || value.isEmpty) {
           return 'Please enter Email Address';
         }
+        // Regular expression to match a valid email address
+        final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+        if (!emailRegExp.hasMatch(value)) {
+          return 'Please enter a valid Email Address';
+        }
         return null;
       },
       title: 'Email Address',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.phone,
       hintText: "Phone Number",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       identifier: "_phoneNumber",
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -157,7 +165,7 @@ class FormFieldData {
       title: 'Phone Number',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.work,
       hintText: "Employment Status",
       keyboardType: TextInputType.text,
       identifier: "_employmentStatus",
@@ -170,7 +178,7 @@ class FormFieldData {
       title: 'Employment Status',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.business,
       hintText: "Employer Name",
       keyboardType: TextInputType.text,
       identifier: "_employerName",
@@ -182,11 +190,10 @@ class FormFieldData {
       },
       title: 'Employer Name',
     ),
-
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.attach_money,
       hintText: "Monthly Income",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       identifier: "_monthlyIncome",
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -197,9 +204,9 @@ class FormFieldData {
       title: 'Monthly Income',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.account_balance,
       hintText: "Bank Account Number",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       identifier: "_bankAccountNumber",
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -210,7 +217,7 @@ class FormFieldData {
       title: 'Bank Account Number',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.account_balance,
       hintText: "Bank Name",
       keyboardType: TextInputType.text,
       identifier: "_bankName",
@@ -223,7 +230,7 @@ class FormFieldData {
       title: 'Bank Name',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.group,
       hintText: "Membership Type",
       keyboardType: TextInputType.text,
       identifier: "_membershipType",
@@ -235,9 +242,8 @@ class FormFieldData {
       },
       title: 'Membership Type',
     ),
-
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.person,
       hintText: "Next of Kin",
       keyboardType: TextInputType.text,
       identifier: "_nextOfKinName",
@@ -250,10 +256,10 @@ class FormFieldData {
       title: 'Next of Kin',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.phone,
       hintText: "Next of Kin Contact",
       identifier: "_nextOfKinContact",
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter Next of Kin Contact';
@@ -263,7 +269,7 @@ class FormFieldData {
       title: 'Next of Kin Contact',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.person,
       hintText: "Beneficiary",
       keyboardType: TextInputType.text,
       identifier: "_beneficiaryName",
@@ -276,7 +282,7 @@ class FormFieldData {
       title: 'Beneficiary',
     ),
     FormFieldData(
-      prefixIcon: Icons.insert_emoticon,
+      prefixIcon: Icons.family_restroom,
       hintText: "Beneficiary Relationship",
       keyboardType: TextInputType.text,
       identifier: "_beneficiaryRelationship",

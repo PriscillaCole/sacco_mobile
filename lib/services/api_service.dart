@@ -8,6 +8,7 @@ class ApiService {
   ApiService(this.apiUrl);
 
   Future<void> createUser(Map<String, dynamic> userData) async {
+  
     try {
       final response = await dio.post(
         baseUrl + apiUrl,
@@ -73,13 +74,13 @@ class ApiService {
   }
 
   Future<void> updateUser(int userId, Map<String, dynamic> updatedData) async {
-  
+        
     try {
       final response = await dio.put(
-        '$baseUrl$apiUrl/6',
+        '$baseUrl$apiUrl/$userId',
         data: updatedData,
       );
-   
+
       if (response.statusCode == 200) {
         print('User updated successfully');
       } else {
@@ -92,9 +93,10 @@ class ApiService {
   }
 
   Future<void> deleteUser(int userId) async {
+  
     try {
-      final response = await dio.delete('$baseUrl + $apiUrl/$userId');
-
+      final response = await dio.delete('$baseUrl$apiUrl/$userId');
+    
       if (response.statusCode == 200) {
         print('User deleted successfully');
       } else {

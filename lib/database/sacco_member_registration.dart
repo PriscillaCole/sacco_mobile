@@ -98,10 +98,20 @@ class DatabaseHelper {
 
     if (members.isNotEmpty) {
       for (final member in members) {
-        print('User ID: ${member['user_id']}, Email: ${member['email']}');
+        print(member);
+        //print('User ID: ${member['user_id']}, Email: ${member['email']}');
       }
     } else {
       print('No Sacco members found.');
     }
+  }
+
+  Future<void> deleteAllSaccoMembers() async {
+    print('Deleting all Sacco members');
+    final db = await _database; // Ensure _database is initialized
+
+    await db.delete('sacco_members');
+
+    print('All Sacco members deleted.');
   }
 }

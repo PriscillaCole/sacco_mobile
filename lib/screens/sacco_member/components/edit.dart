@@ -230,10 +230,10 @@ class _BodyState extends State<Body> {
       'postal_address': fieldValues['postal_address'],
       'email': fieldValues['email'],
       'phone_number': fieldValues['phone_number'],
-      'employment_status': fieldValues['_employment_status'],
-      'employer_name': fieldValues['_employer_name'],
-      'monthly_income': fieldValues['_monthly_income'],
-      'bank_account_number': fieldValues['_bank_account_number'],
+      'employment_status': fieldValues['employment_status'],
+      'employer_name': fieldValues['employer_name'],
+      'monthly_income': fieldValues['monthly_income'],
+      'bank_account_number': fieldValues['bank_account_number'],
       'bank_name': fieldValues['bank_name'],
       'membership_type': fieldValues['membership_type'],
       'membership_id': fieldValues['membership_id'],
@@ -244,19 +244,19 @@ class _BodyState extends State<Body> {
       'beneficiary_relationship': fieldValues['beneficiary_relationship'],
       'status': fieldValues['status'],
     };
-
+   
     try {
       await _apiService.updateUser(fieldValues['user_id'], data);
 
       // Store user in SQLite
       final saccoMember = SaccoMember(
         id: DateTime.now().millisecondsSinceEpoch,
-        saccoId: fieldValues['sacco_id'].toString(),
+        saccoId: '15',
         userId: fieldValues['user_id'].toString(),
-        fullName: fieldValues['full_name'],
-        dateOfBirth: fieldValues['date_of_birth'],
-        gender: fieldValues['gender'],
-        image: fieldValues['image'],
+        fullName: fieldValues['full_name'].toString(),
+        dateOfBirth: fieldValues['date_of_birth'].toString(),
+        gender: fieldValues['gender'].toString(),
+        // image: fieldValues['image'],
         nationality: fieldValues['nationality'],
         identificationNumber: int.parse(fieldValues['identification_number']),
         physicalAddress: fieldValues['physical_address'],
@@ -277,8 +277,8 @@ class _BodyState extends State<Body> {
         beneficiaryRelationship: fieldValues['beneficiary_relationship'],
         status: fieldValues['status'],
       );
-   
-      print('hi');
+
+      print( fieldValues['user_id']);
       // Create an instance of DatabaseHelper
       final DatabaseHelper databaseHelper = DatabaseHelper();
 
@@ -294,9 +294,9 @@ class _BodyState extends State<Body> {
         _isLoading = false;
       });
     } catch (error) {
-      //print('Error inserting into database: $error');
+      print('Error inserting into database: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update user')),
+        const SnackBar(content: Text('Error updating user')),
       );
       setState(() {
         _isLoading = false;

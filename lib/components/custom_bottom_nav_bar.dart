@@ -55,18 +55,19 @@ class CustomBottomNavBar extends StatelessWidget {
                   SharedPreferences localStorage =
                       await SharedPreferences.getInstance();
                   var user = localStorage.getString('user');
-                  print(user);
+
                   final DatabaseHelper databaseHelper = DatabaseHelper();
 
-                  // Ensure the database is initialized
+                  // // Ensure the database is initialized
                   await databaseHelper.initialize();
-
-                  // Check if the user exists in the database
+                 // await databaseHelper.getAllSaccoMembers();
+                  //Check if the user exists in the database
 
                   if (user != null) {
                     var userId = jsonDecode(user)['id'];
-                  
-                    bool userExists = await databaseHelper.checkUserExists(userId);
+
+                    bool userExists =
+                        await databaseHelper.checkUserExists(userId);
                     if (userExists) {
                       // User exists, navigate to a different page
                       // ignore: use_build_context_synchronously
